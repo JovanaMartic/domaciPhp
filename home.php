@@ -12,20 +12,15 @@ if (!isset($_SESSION['korisnik_id'])) {
 else {
     $idSad = $_SESSION['korisnik_id'];
 }
-
-if ($idSad != 3){
-    $kategorija = Kategorija::prikaziPremaZanimanju($idSad,$conn);
-}
-else {
     $kategorija = Kategorija::prikaziSve($conn);
-    $la = Zaposleni::prikaziZ($conn);
-}
+    $zaposleni = Zaposleni::prikaziZ($conn);
+
 if (!$kategorija) {
     echo "Nastala je greška pri preuzimanju podataka";
     die();
 }
 if ($kategorija->num_rows == 0) {
-    echo "Nema prijava na kolokvijume";
+    echo "Nema kategorija";
     die();
 } else {
 
@@ -45,7 +40,7 @@ if ($kategorija->num_rows == 0) {
 
 
 <div>
-        <h1>kategorijai:</h1>
+        <h1>Kategorije:</h1>
 </div>
 
 <div>
@@ -56,7 +51,7 @@ if ($kategorija->num_rows == 0) {
                         <th scope="col">ID</th>
                         <th scope="col">naziv</th>
                         <th scope="col">cena</th>
-                        <th scope="col">Sifra zaposlenog</th>
+                        <th scope="col">Sifra specijaliste</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,24 +71,22 @@ if ($kategorija->num_rows == 0) {
                 </tbody>
             </table>
 <?php
-            if ($idSad == 3){
+            
                 ?>
             <table id="tabela1" class="table table-hover table-striped">
                 <thead class="thead">
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Ime</th>
-                        <th scope="col">Tip</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    while ($red = $la->fetch_array()) :
+                    while ($red = $zaposleni->fetch_array()) :
                     ?>
                         <tr>
                             <td><?php echo $red["id"] ?></td>
                             <td><?php echo $red["ime"] ?></td>
-                            <td><?php echo $red["tip_zaposlenog"] ?></td>
                         </tr>
                         <?php
                     endwhile;
@@ -119,8 +112,7 @@ if ($kategorija->num_rows == 0) {
 
             </div>
             <?php
-            }
-            else {
+            
             ?>
 
             <div class="row">
@@ -142,7 +134,7 @@ if ($kategorija->num_rows == 0) {
                 </div>
             </div>
             <?php
-            }
+            
             ?>
 
             
@@ -165,10 +157,6 @@ if ($kategorija->num_rows == 0) {
                                     <div class="form-group">
                                         <label for="">sifra</label>
                                         <input type="text" style="border: 1px solid black" name="sifra" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">tip zaposlenog</label>
-                                        <input type="text" style="border: 1px solid black" name="tip_zaposlenog" class="form-control" />
                                     </div>
                                     <div class="form-group">
                                         <button id="btnDodajZ" input type="submit" class="btn" >Dodaj</button>
@@ -213,9 +201,7 @@ if ($kategorija->num_rows == 0) {
                                         <input id="sifra" type="text" name="sifra" class="form-control"  value="" />
                                     </div>
                                     <div class="form-group">
-                                    <label for="">Tip zaposlenog</label>
-                                        <input id="tip_zaposlenog" type="text" name="tip_zaposlenog" class="form-control" value="" />
-                                    </div>
+                                    
                                     <div class="form-group">
                                         <button id="btnIzmeniZ" type="submit" class="btn"> Izmeni</button>
                                     </div>

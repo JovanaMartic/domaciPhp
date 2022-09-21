@@ -16,7 +16,7 @@ if(isset($_POST['id']) && isset($_POST['ime']) && isset($_POST['sifra'])){
    if($odg->num_rows==1){
         $_SESSION['korisnik_id'] = $korisnik->id;
         ob_start();
-        header('Location: pocetna.php');
+        header('Location: home.php');
         ob_end_flush();
         exit();
     }else{
